@@ -1,0 +1,46 @@
+# Node
+node_modules/
+.pnpm-store/
+.npm/
+
+# Build artefacts
+dist/
+build/
+.vite/
+.turbo/
+*.tsbuildinfo
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Supabase
+supabase/.branches/
+supabase/.temp/
+
+# Playwright
+playwright-report/
+test-results/
+blob-report/
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Planning privado — no va al repo público
+Contexto/
+FASE_0.md
+
+# Claude Code state (logs, cache de tools de la sesión)
+.claude/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Coverage
+coverage/
