@@ -1,4 +1,4 @@
-# {{PRODUCT_NAME}}
+AgendaPu
 
 > Pagos recurrentes en pesos, ejecutados con Bitcoin Lightning, fondeados just-in-time desde tu propia wallet.
 
