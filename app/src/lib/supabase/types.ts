@@ -34,6 +34,7 @@ export interface Database {
           nostr_pubkey?: string | null
           prefers_nostr_auth?: boolean
         }
+        Relationships: []
       }
       wapu_credentials: {
         Row: {
@@ -53,6 +54,7 @@ export interface Database {
           encryption_method?: EncryptionMethod
           updated_at?: string
         }
+        Relationships: []
       }
       nwc_connections: {
         Row: {
@@ -76,6 +78,7 @@ export interface Database {
           encrypted_connection_string?: string
           encryption_method?: EncryptionMethod
         }
+        Relationships: []
       }
       contacts_cache: {
         Row: {
@@ -105,6 +108,7 @@ export interface Database {
           is_favourite?: boolean
           updated_at?: string
         }
+        Relationships: []
       }
       scheduled_payments: {
         Row: {
@@ -143,6 +147,7 @@ export interface Database {
           next_run?: string | null
           paused?: boolean
         }
+        Relationships: []
       }
       payment_runs: {
         Row: {
@@ -185,7 +190,20 @@ export interface Database {
           error_message?: string | null
           raw_wapu_response?: unknown | null
         }
+        Relationships: []
       }
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      [_ in never]: never
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
     }
   }
 }

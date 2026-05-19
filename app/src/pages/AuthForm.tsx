@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { signIn, signUp } from "@/lib/auth"
+import { useKey } from "@/lib/crypto/KeyContext"
 
 const schema = z.object({
   email: z.string().email("Email inválido"),
@@ -30,6 +31,7 @@ interface AuthFormProps {
 
 export function AuthForm({ mode }: AuthFormProps) {
   const navigate = useNavigate()
+  const { unlock } = useKey()
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [needsConfirmation, setNeedsConfirmation] = useState(false)
 
@@ -50,6 +52,9 @@ export function AuthForm({ mode }: AuthFormProps) {
         setNeedsConfirmation(true)
         return
       }
+      // Deriva la clave de cifrado mientras tenemos el password en mano.
+      const userId = result.user?.id ?? result.session.user.id
+      await unlock(userId, password)
       navigate("/onboarding/wapu", { replace: true })
     } catch (err) {
       setSubmitError(err instanceof Error ? err.message : "Error desconocido")
