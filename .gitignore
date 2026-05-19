@@ -32,7 +32,7 @@ Thumbs.db
 
 # Planning privado — no va al repo público
 Contexto/
-FASE_0.md
+FASE_*.md
 
 # Claude Code state (logs, cache de tools de la sesión)
 .claude/
