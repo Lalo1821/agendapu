@@ -23,6 +23,10 @@ supabase/.temp/
 playwright-report/
 test-results/
 blob-report/
+.playwright-mcp/
+
+# Screenshots de demo (no van al repo)
+/*.png
 
 # Editor / OS
 .vscode/

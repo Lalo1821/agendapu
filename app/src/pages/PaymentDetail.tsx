@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react"
-import { Link, Navigate, useNavigate, useParams } from "react-router-dom"
+import {
+  Link,
+  Navigate,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -9,6 +15,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { ExecuteModal } from "@/components/ExecuteModal"
 import { useSession } from "@/lib/auth/useSession"
 import {
   deleteScheduledPayment,
@@ -31,6 +38,8 @@ function Field({ label, value }: { label: string; value: string }) {
 export function PaymentDetail() {
   const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
+  const [searchParams] = useSearchParams()
+  const mock = searchParams.get("mock") === "1"
   const sessionState = useSession()
 
   const [row, setRow] = useState<ScheduledPayment | null>(null)
@@ -39,6 +48,7 @@ export function PaymentDetail() {
   const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
   const [confirmingDelete, setConfirmingDelete] = useState(false)
+  const [executeOpen, setExecuteOpen] = useState(false)
 
   const userId =
     sessionState.status === "authenticated" ? sessionState.session.user.id : null
@@ -163,6 +173,15 @@ export function PaymentDetail() {
             </CardContent>
 
             <CardFooter className="flex-col gap-2">
+              {!row.paused && (
+                <Button
+                  className="w-full"
+                  onClick={() => setExecuteOpen(true)}
+                  disabled={busy}
+                >
+                  Pagar ahora
+                </Button>
+              )}
               <div className="flex w-full gap-2">
                 <Button variant="outline" className="flex-1" asChild>
                   <Link to={`/payments/${row.id}/edit`}>Editar</Link>
@@ -215,6 +234,16 @@ export function PaymentDetail() {
           </>
         )}
       </Card>
+
+      {row && (
+        <ExecuteModal
+          open={executeOpen}
+          onOpenChange={setExecuteOpen}
+          payment={row}
+          userId={userId}
+          mock={mock}
+        />
+      )}
     </div>
   )
 }

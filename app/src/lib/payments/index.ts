@@ -132,6 +132,24 @@ export async function updateScheduledPayment(
   return data
 }
 
+// Update parcial sobre la fila — sin recalcular next_run desde un PaymentInput.
+// Lo usa Fase 4 para avanzar `next_run` tras un cobro exitoso.
+export async function updatePayment(
+  userId: string,
+  id: string,
+  patch: Database["public"]["Tables"]["scheduled_payments"]["Update"],
+): Promise<ScheduledPayment> {
+  const { data, error } = await supabase
+    .from("scheduled_payments")
+    .update(patch)
+    .eq("user_id", userId)
+    .eq("id", id)
+    .select()
+    .single()
+  if (error) throw error
+  return data
+}
+
 /**
  * Pausa o reanuda. Al reanudar se recalcula `next_run` desde hoy: si el
  * pago estuvo pausado meses, no queremos que dispare contra una fecha vieja.

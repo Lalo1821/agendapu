@@ -2,6 +2,13 @@ export type EncryptionMethod = "pbkdf2-aes-gcm" | "nip44"
 
 export type PaymentFrequency = "monthly" | "weekly" | "custom"
 
+// Atajo: el row de la tabla, reexportado para que los módulos no tengan que
+// indexar `Database["public"]["Tables"]["scheduled_payments"]["Row"]`.
+export type ScheduledPayment =
+  Database["public"]["Tables"]["scheduled_payments"]["Row"]
+export type PaymentRun =
+  Database["public"]["Tables"]["payment_runs"]["Row"]
+
 export type PaymentStatus =
   | "pending"
   | "tentative_created"
