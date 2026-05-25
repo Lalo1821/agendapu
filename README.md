@@ -63,6 +63,22 @@ npm run test        # vitest (unit)
 npm run test:e2e    # playwright (flujo end-to-end)
 ```
 
+## Deploy en Vercel
+
+El Project Root de Vercel apunta a `app/`. Las llamadas del browser a la API de Wapu se ruteo a través de un rewrite definido en [`app/vercel.json`](./app/vercel.json) para evitar problemas de CORS:
+
+```
+/api/wapu/*  →  https://be-stage.wapu.app/*
+```
+
+Por eso, en las variables de entorno del proyecto Vercel hay que setear:
+
+```
+VITE_WAPU_API_BASE_URL = /api/wapu
+```
+
+En desarrollo local, la misma variable apunta directo a `https://be-stage.wapu.app` (ver `app/.env.example`).
+
 ## Estructura
 
 ```
