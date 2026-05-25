@@ -1,6 +1,6 @@
 {
   "rewrites": [
-    { "source": "/api/wapu/:path*", "destination": "https://be-stage.wapu.app/:path*" },
+    { "source": "/api/wapu/:path*", "destination": "https://be-prod.wapu.app/:path*" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
