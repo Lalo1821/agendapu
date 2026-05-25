@@ -100,6 +100,7 @@ export function createWapuClient(options: WapuClientOptions = {}): WapuClient {
 
     let res: Response
     try {
+      if (apiKey) console.log("[WAPU-TOKEN]", apiKey.slice(0, 8))
       res = await fetchImpl(url.toString(), {
         method,
         headers,
