@@ -106,6 +106,9 @@ export function Dashboard() {
         <h1 className="font-heading text-2xl">AgendaPu</h1>
         <div className="flex items-center gap-2">
           <Button variant="outline" asChild>
+            <Link to="/history">Histórico</Link>
+          </Button>
+          <Button variant="outline" asChild>
             <Link to="/health">Estado</Link>
           </Button>
           <Button variant="outline" onClick={handleSignOut}>

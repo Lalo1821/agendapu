@@ -26,6 +26,9 @@ const OnboardingNwc = lazy(() =>
 const Health = lazy(() =>
   import("@/pages/Health").then((m) => ({ default: m.Health })),
 )
+const History = lazy(() =>
+  import("@/pages/History").then((m) => ({ default: m.History })),
+)
 
 function PageFallback() {
   return (
@@ -51,6 +54,7 @@ export function App() {
           <Route path="/payments/:id" element={<PaymentDetail />} />
           <Route path="/payments/:id/edit" element={<PaymentForm />} />
           <Route path="/health" element={<Health />} />
+          <Route path="/history" element={<History />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/login" replace />} />
