@@ -67,7 +67,14 @@ export function createWapuClient(options: WapuClientOptions = {}): WapuClient {
     )
   }
 
-  const baseUrl = (options.baseUrl ?? DEFAULT_BASE_URL).replace(/\/+$/, "")
+  // En producción usamos un rewrite Vercel ("/api/wapu" → wapu.app) para
+  // sortear CORS, así que el baseUrl puede ser relativo. `new URL()` no
+  // acepta paths sin host: si arranca con "/", lo absolutizamos con el
+  // origin del navegador. En SSR/no-DOM cae a "" y revienta más adelante.
+  const rawBase = (options.baseUrl ?? DEFAULT_BASE_URL).replace(/\/+$/, "")
+  const baseUrl = rawBase.startsWith("/")
+    ? `${globalThis.location?.origin ?? ""}${rawBase}`
+    : rawBase
   const fetchImpl = options.fetchImpl ?? globalThis.fetch
   const timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS
 

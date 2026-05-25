@@ -100,6 +100,17 @@ describe("createWapuClient — auth y request shape", () => {
     await c.listContacts()
     expect(spy.mock.calls[0][0]).toBe(`${BASE}/contacts`)
   })
+
+  it("acepta baseUrl relativo y lo absolutiza con location.origin", async () => {
+    // En Vercel prod baseUrl viene como "/api/wapu" (rewrite a wapu.app),
+    // así que `new URL(...)` necesita un host: lo tomamos del navegador.
+    const spy = vi.fn<typeof fetch>(async () => new Response("{}", { status: 200 }))
+    const c = createWapuClient({ apiKey: "k", baseUrl: "/api/wapu", fetchImpl: spy })
+    await c.getHome()
+    expect(spy.mock.calls[0][0]).toBe(
+      `${globalThis.location.origin}/api/wapu/users/home`,
+    )
+  })
 })
 
 describe("WapuError — mapeo de status a kind/exitCode", () => {
