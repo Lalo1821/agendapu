@@ -7,11 +7,11 @@ Integra **Wapu** como ramp ARS → Lightning y **NWC** (Nostr Wallet Connect) pa
 
 ## Por qué
 
-En Argentina, agendar un pago recurrente en pesos hoy implica o bien delegar custodia a un tercero (riesgo + fricción regulatoria), o bien acordarte de pagar a mano cada mes (no escala). {{PRODUCT_NAME}} cierra ese hueco: vos seguís siendo el custodio de tus sats, la app solo dispara la conversión + el pago Lightning cuando vos confirmás.
+En Argentina, agendar un pago recurrente en pesos hoy implica o bien delegar custodia a un tercero (riesgo + fricción regulatoria), o bien acordarte de pagar a mano cada mes (no escala). AgendaPu cierra ese hueco: vos seguís siendo el custodio de tus sats, la app solo dispara la conversión + el pago Lightning cuando vos confirmás.
 
 ## Demo
 
-_Próximamente — GIF + link de Vercel._
+https://agendapu.vercel.app
 
 ## Stack
 
@@ -26,16 +26,16 @@ _Próximamente — GIF + link de Vercel._
 
 - La API key de Wapu y la NWC connection string del usuario **se cifran en el navegador** antes de viajar a Supabase. El servidor solo ve blobs.
 - La clave de cifrado se deriva del password del usuario (PBKDF2) o de su clave Nostr (NIP-44). Sin password / sin NIP-07, no hay forma de descifrar.
-- Los sats viven en la wallet Lightning del usuario hasta el momento del pago. {{PRODUCT_NAME}} no tiene fondos custodiados.
+- Los sats viven en la wallet Lightning del usuario hasta el momento del pago. AgendaPu no tiene fondos custodiados.
 
 ## Estado del proyecto
 
 - [x] Fase 0 — Setup (scaffold, schema, infra base).
-- [ ] Fase 1 — Auth + crypto.
-- [ ] Fase 2 — Clientes Wapu y NWC.
-- [ ] Fase 3 — CRUD pagos programados.
-- [ ] Fase 4 — Dashboard + ejecución end-to-end.
-- [ ] Fase 5 — Histórico + export.
+- [x] Fase 1 — Auth + crypto.
+- [x] Fase 2 — Clientes Wapu y NWC.
+- [x] Fase 3 — CRUD pagos programados.
+- [x] Fase 4 — Dashboard + ejecución end-to-end.
+- [x] Fase 5 — Histórico + export.
 - [ ] Fase 6 — Settings + cleanup.
 - [ ] Fase 7 — Tests + polish.
 - [ ] Fase 8 — Entrega (deck + PR a `lacrypta/hackathons-2026`).
