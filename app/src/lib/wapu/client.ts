@@ -131,14 +131,36 @@ export function createWapuClient(options: WapuClientOptions = {}): WapuClient {
     getHome: () => request("GET", "/users/home"),
     tentativeAmount: (input) =>
       request("POST", "/transactions/tentative-amount", { body: input }),
-    createDirectFiatTentative: (input) =>
-      request("POST", "/transactions/direct-fiat/tentatives", { body: input }),
-    issueFunding: (tentativeUuid) =>
-      request(
-        "POST",
-        `/transactions/direct-fiat/tentatives/${encodeURIComponent(tentativeUuid)}/funding`,
-        { body: {} },
-      ),
+    createDirectFiatTentative: async (input) => {
+      console.log("[WAPU-DEBUG] createDirectFiatTentative req body", input)
+      try {
+        const res = await request<WapuDirectFiatTentative>(
+          "POST",
+          "/transactions/direct-fiat/tentatives",
+          { body: input },
+        )
+        console.log("[WAPU-DEBUG] createDirectFiatTentative res", res)
+        return res
+      } catch (err) {
+        console.log("[WAPU-DEBUG] createDirectFiatTentative error", err)
+        throw err
+      }
+    },
+    issueFunding: async (tentativeUuid) => {
+      console.log("[WAPU-DEBUG] issueFunding req", { tentativeUuid, body: {} })
+      try {
+        const res = await request<WapuFunding>(
+          "POST",
+          `/transactions/direct-fiat/tentatives/${encodeURIComponent(tentativeUuid)}/funding`,
+          { body: {} },
+        )
+        console.log("[WAPU-DEBUG] issueFunding res", res)
+        return res
+      } catch (err) {
+        console.log("[WAPU-DEBUG] issueFunding error", err)
+        throw err
+      }
+    },
     getTransaction: (id) =>
       request("GET", `/transactions/${encodeURIComponent(id)}`),
     listTransactions: () => request("GET", "/transactions/my_transactions"),
