@@ -140,6 +140,7 @@ export function createWapuClient(options: WapuClientOptions = {}): WapuClient {
           { body: input },
         )
         console.log("[WAPU-DEBUG] createDirectFiatTentative res", res)
+        console.log("[WAPU-DEBUG] createDirectFiatTentative res JSON", JSON.stringify(res, null, 2))
         return res
       } catch (err) {
         console.log("[WAPU-DEBUG] createDirectFiatTentative error", err)
@@ -155,6 +156,7 @@ export function createWapuClient(options: WapuClientOptions = {}): WapuClient {
           { body: {} },
         )
         console.log("[WAPU-DEBUG] issueFunding res", res)
+        console.log("[WAPU-DEBUG] issueFunding res JSON", JSON.stringify(res, null, 2))
         return res
       } catch (err) {
         console.log("[WAPU-DEBUG] issueFunding error", err)
