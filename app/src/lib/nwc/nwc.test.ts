@@ -139,9 +139,11 @@ describe("payInvoice", () => {
     expect(err.kind).toBe("unknown")
   })
 
-  it("nuestro timeout dispara cuando la wallet no responde", async () => {
-    h.behavior.payInvoice = () => new Promise(() => {})
-    const err = await payInvoice(NWC, "lnbc1", 10).catch((e) => e)
+  it("Nip47TimeoutError del SDK se mapea a NwcError timeout", async () => {
+    h.behavior.payInvoice = async () => {
+      throw new h.Nip47TimeoutError("reply timeout", "INTERNAL")
+    }
+    const err = await payInvoice(NWC, "lnbc1").catch((e) => e)
     expect(err).toBeInstanceOf(NwcError)
     expect(err.kind).toBe("timeout")
     expect(h.closed.count).toBe(1)

@@ -70,9 +70,13 @@ function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
   })
 }
 
+// timeoutMs=null → sin timeout externo: el SDK ya tiene replyTimeout interno
+// (60s para payInvoice). Cortar antes que ese timeout cierra el WebSocket
+// con la respuesta del wallet en vuelo. Para read-only (getInfo/getBalance)
+// sí ponemos timeout externo: ~30s es razonable para health-checks.
 async function withClient<T>(
   connectionString: string,
-  timeoutMs: number,
+  timeoutMs: number | null,
   fn: (client: NWCClient) => Promise<T>,
 ): Promise<T> {
   const sdk = await loadSdk()
@@ -83,7 +87,8 @@ async function withClient<T>(
     throw new NwcError("wallet_offline", "La cadena de conexión NWC es inválida", err)
   }
   try {
-    return await withTimeout(fn(client), timeoutMs)
+    const work = fn(client)
+    return timeoutMs === null ? await work : await withTimeout(work, timeoutMs)
   } catch (err) {
     throw mapError(err, sdk)
   } finally {
@@ -96,13 +101,14 @@ export interface PayInvoiceResult {
   feesPaidMsat: number
 }
 
-// Paga un bolt11 desde la wallet del usuario vía NWC.
+// Paga un bolt11 desde la wallet del usuario vía NWC. Sin timeout externo:
+// el SDK ya espera hasta 60s a la respuesta del wallet (replyTimeout). Cortar
+// antes haría close() sobre un WebSocket con la respuesta del wallet en vuelo.
 export async function payInvoice(
   connectionString: string,
   bolt11: string,
-  timeoutMs = DEFAULT_TIMEOUT_MS,
 ): Promise<PayInvoiceResult> {
-  return withClient(connectionString, timeoutMs, async (client) => {
+  return withClient(connectionString, null, async (client) => {
     const res = await client.payInvoice({ invoice: bolt11 })
     return { preimage: res.preimage, feesPaidMsat: res.fees_paid ?? 0 }
   })
