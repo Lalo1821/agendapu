@@ -63,11 +63,11 @@ export async function runPayment(
     })
     await onStep({
       step: "tentative_created",
-      tentativeUuid: tentative.tentative_uuid,
+      tentativeUuid: tentative.tentative_id,
     })
 
     // 3. Funding — Wapu nos devuelve el bolt11 a pagar y el id de la transacción.
-    const funding = await wapu.issueFunding(tentative.tentative_uuid)
+    const funding = await wapu.issueFunding(tentative.tentative_id)
     const depositTxId = funding.deposit_transaction_id ?? ""
     await onStep({
       step: "funding_issued",

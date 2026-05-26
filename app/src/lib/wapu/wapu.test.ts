@@ -38,9 +38,9 @@ describe("createWapuClient — happy path contra mock", () => {
       funding_method: "LIGHTNING",
       network: "LIGHTNING",
     })
-    expect(tentative.tentative_uuid).toBe("mock-tentative-uuid")
+    expect(tentative.tentative_id).toBe("mock-tentative-uuid")
 
-    const funding = await c.issueFunding(tentative.tentative_uuid)
+    const funding = await c.issueFunding(tentative.tentative_id)
     expect(funding.bolt11).toBe("lnbc-x")
     expect(funding.deposit_transaction_id).toBe("mock-deposit-tx")
   })

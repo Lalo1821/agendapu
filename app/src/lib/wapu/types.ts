@@ -56,7 +56,7 @@ export interface WapuDirectFiatTentativeInput {
 }
 
 export interface WapuDirectFiatTentative {
-  tentative_uuid: string
+  tentative_id: string
   [key: string]: unknown
 }
 

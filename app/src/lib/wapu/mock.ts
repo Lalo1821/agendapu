@@ -113,7 +113,7 @@ export function createWapuMockFetch(overrides: Partial<WapuMockState> = {}): typ
       })
     }
     if (method === "POST" && pathname === "/transactions/direct-fiat/tentatives") {
-      return json(200, { tentative_uuid: state.tentativeUuid, ...parseBody(init) })
+      return json(200, { tentative_id: state.tentativeUuid, ...parseBody(init) })
     }
     if (method === "POST" && pathname.endsWith("/funding")) {
       return json(200, {
