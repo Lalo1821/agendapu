@@ -45,13 +45,12 @@ export async function runPayment(
   try {
     // 1. Cotización (sirve sobre todo para mostrar el monto en sats en la UI).
     await onStep({ step: "quoting" })
-    const quote = await wapu.tentativeAmount({
+    await wapu.tentativeAmount({
       amount: scheduled.amount_ars,
       currency_payment: "ARS",
       currency_taken: "SAT",
       type: "fiat_transfer",
     })
-    console.log("[WAPU-RAW] tentativeAmount", quote)
 
     // 2. Tentativa direct-fiat — devuelve el UUID con el que se pide el funding.
     const tentative = await wapu.createDirectFiatTentative({
@@ -62,7 +61,6 @@ export async function runPayment(
       funding_method: "LIGHTNING",
       network: "LIGHTNING",
     })
-    console.log("[WAPU-RAW] createDirectFiatTentative", tentative)
     await onStep({
       step: "tentative_created",
       tentativeUuid: tentative.tentative_uuid,
@@ -70,7 +68,6 @@ export async function runPayment(
 
     // 3. Funding — Wapu nos devuelve el bolt11 a pagar y el id de la transacción.
     const funding = await wapu.issueFunding(tentative.tentative_uuid)
-    console.log("[WAPU-RAW] issueFunding", funding)
     const depositTxId = funding.deposit_transaction_id ?? ""
     await onStep({
       step: "funding_issued",
@@ -86,13 +83,8 @@ export async function runPayment(
     // 5. Polling hasta estado terminal o timeout. Wapu ve la HTLC con un par
     //    de segundos de delay; no hay webhooks así que polling es la única opción.
     const startedAt = Date.now()
-    let loggedFirstTx = false
     while (Date.now() - startedAt < timeoutMs) {
       const tx = await wapu.getTransaction(depositTxId)
-      if (!loggedFirstTx) {
-        console.log("[WAPU-RAW] getTransaction (first poll)", tx)
-        loggedFirstTx = true
-      }
       if (tx.status === "CONFIRMED") {
         await onStep({ step: "confirmed", txId: tx.id })
         return {
